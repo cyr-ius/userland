@@ -80,9 +80,10 @@ void printLogEx(int logfile, char *msg, ...) {
 	if (fp != NULL) {
 		clock_gettime(CLOCK_REALTIME, &currTime);
 		localTime = localtime (&(currTime.tv_sec));
-		makeName(&timestamp, "{%Y/%M/%D %h:%m:%s} ");
-		fprintf(fp, "%s",timestamp);
+		makeName(&timestamp, "%Y/%M/%D %h:%m:%s");
+		fprintf(fp, "{\"datetime\":\"%s\",\"msg\":\"",timestamp);
 		vfprintf(fp, msg, args);
+		fprintf(fp, "%s%s","\"", "}\n");
 		if (cfg_stru[logfile] != 0) {
 			fclose(fp);
 			if (nofile) chmod(cfg_stru[logfile], 0777);
@@ -110,9 +111,10 @@ void printLog(char *msg, ...) {
 	if (fp != NULL) {
 		clock_gettime(CLOCK_REALTIME, &currTime);
 		localTime = localtime (&(currTime.tv_sec));
-		makeName(&timestamp, "{%Y/%M/%D %h:%m:%s} ");
-		fprintf(fp, "%s",timestamp);
+		makeName(&timestamp, "%Y/%M/%D %h:%m:%s");
+		fprintf(fp, "{\"datetime\":\"%s\",\"msg\":\"",timestamp);
 		vfprintf(fp, msg, args);
+		fprintf(fp, "%s%s","\"", "}\n");
 		if (cfg_stru[c_log_file] != 0) {
 			fclose(fp);
 			if (nofile) chmod(cfg_stru[c_log_file], 0777);
@@ -170,7 +172,7 @@ void updateStatus() {
 }
 
 void error (const char *string, char fatal) {
-	printLog("Error: %s\n", string);
+	printLog("Error: %s", string);
 	if (fatal == 0) {
 		exec_macro(cfg_stru[c_error_soft], string);
 		return;
@@ -420,7 +422,7 @@ int get_box_count() {
 void add_box_file(char *boxfile) {
 	if ((MAX_BOX_FILES - get_box_count()) > 2 ) {
 		asprintf(&box_files[box_head], "%s", boxfile);
-		printLog("Add %s to Box Queue at pos %d\n", box_files[box_head], box_head);
+		printLog("Add %s to Box Queue at pos %d", box_files[box_head], box_head);
 		box_head++;
 		if (box_head >= MAX_BOX_FILES) box_head = 0;
 	} else {
@@ -435,7 +437,7 @@ int check_box_files() {
 		makeBoxname(&filename_temp, box_files[box_tail]);
 		// check if current MP4Box finished by seeing if h264 now deleted
 		if (access(filename_temp, F_OK ) == -1) {
-			printLog("Finished boxing %s from Box Queue at pos %d\n", box_files[box_tail], box_tail);
+			printLog("Finished boxing %s from Box Queue at pos %d", box_files[box_tail], box_tail);
 			exec_macro(cfg_stru[c_end_box], box_files[box_tail]);
 			free(box_files[box_tail]);
 			box_tail++;
@@ -450,7 +452,7 @@ int check_box_files() {
 		makeBoxname(&filename_temp, box_files[box_tail]);
 		if(cfg_stru[c_MP4Box_cmd] == 0) cfg_stru[c_MP4Box_cmd] = "(set -e;MP4Box -fps %i -add %s %s > /dev/null 2>&1;rm \"%s\";MP4Box -info \"%s\" > \"%s.txt\") &";
 		asprintf(&cmd_temp, cfg_stru[c_MP4Box_cmd], cfg_val[c_MP4Box_fps], filename_temp, box_files[box_tail], filename_temp, box_files[box_tail], box_files[box_tail]);
-		printLog("Start boxing %s to %s Queue pos %d\n", filename_temp, box_files[box_tail], box_tail);
+		printLog("Start boxing %s to %s Queue pos %d", filename_temp, box_files[box_tail], box_tail);
 		system(cmd_temp);
 		v_boxing = 1;
 		free(cmd_temp);
@@ -470,7 +472,7 @@ void check_h264_toBox() {
 		makeFilename(&search, cfg_stru[c_video_path]);
 		// find base path from last /
 		s = strrchr(search, '/');
-		printLog("h264 search %s\n", search);
+		printLog("h264 search %s", search);
 		if (s != NULL) {
 			//truncate off to get base path and open it
 			*s = 0;
@@ -484,7 +486,7 @@ void check_h264_toBox() {
 					if (e > n && strcmp(e, ".h264") == 0) {
 						*(n + strlen(n) - 5) = 0;
 						asprintf(&h264, "%s/%s.mp4", search, n);
-						printLog("h264 found %s\n", h264);
+						printLog("h264 found %s", h264);
 						add_box_file(h264);
 						free(h264);
 					}
@@ -499,7 +501,7 @@ void check_h264_toBox() {
 void send_schedulecmd(char *cmd) {
 	FILE *m_pipe;
 
-	printLog("send smd %s\n", cmd);
+	printLog("send smd %s", cmd);
 	if (cfg_stru[c_motion_pipe] != NULL) {
 		m_pipe = fopen(cfg_stru[c_motion_pipe], "w");
 		if (m_pipe != NULL) {

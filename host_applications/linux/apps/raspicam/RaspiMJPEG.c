@@ -164,7 +164,7 @@ void addValue(int keyI, char *value, int both){
 }
 
 void addUserValue(int key, char *value){
-   printLog("Change: %s = %s\n", cfg_key[key], value);
+   printLog("Change: %s = %s", cfg_key[key], value);
    addValue(key, value, 0);
 }
 
@@ -176,11 +176,11 @@ void saveUserConfig(char *cfilename) {
       for(i = 0; i < KEY_COUNT; i++) {
          if(strlen(cfg_key[i]) > 0) {
             if(cfg_stru[i] != 0 && cfg_strd[i] != 0 && strcmp(cfg_strd[i], cfg_stru[i]) != 0) {
-               fprintf(fp, "%s %s\n", cfg_key[i], cfg_stru[i]);
+               fprintf(fp, "%s %s", cfg_key[i], cfg_stru[i]);
             } else if (cfg_stru[i] != 0 && cfg_strd[i] == 0) {
-               fprintf(fp, "%s %s\n", cfg_key[i], cfg_stru[i]);
+               fprintf(fp, "%s %s", cfg_key[i], cfg_stru[i]);
             } else if (cfg_stru[i] == 0 && cfg_strd[i] != 0) {
-               fprintf(fp, "%s\n", cfg_key[i]);
+               fprintf(fp, "%s", cfg_key[i]);
             }
          }
       }
@@ -256,7 +256,7 @@ void monitor() {
          case 0: //child
             return; //continue to execute the code from main
          default: //parent
-            printLog("start monitoring for pid: %d\n", pid);
+            printLog("start monitoring for pid: %d", pid);
             int child_status;
             //wait for child process to terminate
             wait(&child_status);
@@ -279,7 +279,7 @@ int main (int argc, char* argv[]) {
    //
    for(i=1; i<argc; i++) {
       if(strcmp(argv[i], "--version") == 0) {
-         printf("RaspiMJPEG Version %s\n", VERSION);
+         printf("RaspiMJPEG Version %s", VERSION);
          exit(0);
       }
       else if(strcmp(argv[i], "-md") == 0) {
@@ -305,7 +305,7 @@ int main (int argc, char* argv[]) {
       free(bpath);
    }
    
-   printLog("RaspiMJPEG Version %s\n", VERSION);
+   printLog("RaspiMJPEG Version %s", VERSION);
    exec_macro(cfg_stru[c_startstop],"start");
    
    if(cfg_val[c_autostart]) start_all(0);
@@ -353,32 +353,32 @@ int main (int argc, char* argv[]) {
    for(i=0;i < FIFO_MAX; i++) {
      fd[i] = open(fdName[i], O_RDONLY | O_NONBLOCK);
      if(fd[i] >= 0) {
-	   printLog("Opening FIFO %i %s %i\n", i, fdName[i], fd[i]);
+	   printLog("Opening FIFO %i %s %i", i, fdName[i], fd[i]);
 	   fcntl(fd[i], F_SETFL, 0); 
 	 } 
    }
    
    if(cfg_val[c_autostart]) {
-	 printLog("MJPEG streaming, ready to receive commands\n");
+	 printLog("MJPEG streaming, ready to receive commands");
 	 //kick off motion detection at start if required.
 	 if(cfg_val[c_motion_detection] && cfg_val[c_motion_external] == 1) {
-		printLog("Autostart external motion kill any runnng motion\n");
+		printLog("Autostart external motion kill any runnng motion");
 		if(system("killall motion 2> /dev/null") == -1) error("Could not stop external motion", 1);
 		sleep(1);
-		printLog("Autostart external motion start external motion\n");
+		printLog("Autostart external motion start external motion");
 		if(system("motion") == -1) error("Could not start external motion", 1);
 	 }
    }
    else {
-      if(cfg_stru[c_control_file] != 0) printLog("MJPEG idle, ready to receive commands\n");
-      else printLog("MJPEG idle\n");
+      if(cfg_stru[c_control_file] != 0) printLog("MJPEG idle, ready to receive commands");
+      else printLog("MJPEG idle");
    }
    
    updateStatus();
    //Send restart signal to scheduler
    send_schedulecmd("9");
    
-   printLog("Starting command loop\n");
+   printLog("Starting command loop");
    if(cfg_val[c_fifo_interval] < 100000)
 	   cfg_val[c_fifo_interval] = 100000;
    while(running == 1) {
@@ -422,25 +422,25 @@ int main (int argc, char* argv[]) {
          //run check on background boxing every 10 ticks and check for video timer if capturing
          onesec_check = 0;
          // 4.9 compiler seems to want a print after the box finish to get input FIFO working again
-         if (check_box_files()) printLog("Removed item from Box Queue\n");
+         if (check_box_files()) printLog("Removed item from Box Queue");
          // Check to make sure image operation not stuck (no callback) if enabled
          if ((cfg_val[c_callback_timeout] > 0) && i_capturing) {
             i_capturing--;
             if (i_capturing == 0) {
-               printLog("Image capture timed out %s\n", filename_image);
+               printLog("Image capture timed out %s", filename_image);
                close_img(0);
             }
          }
          if (v_capturing && video_stoptime > 0) {
             if (time(NULL) >= video_stoptime) {
-               printLog("Stopping video from timer\n");
+               printLog("Stopping video from timer");
                stop_video(0);
 			   if (cfg_val[c_video_split] > 0 && (video_stoptimeEnd == 0 || video_stoptimeEnd > time(NULL))) {
 				  video_stoptime = time(NULL) + cfg_val[c_video_split];
                   if(video_stoptimeEnd != 0 && video_stoptime >= video_stoptimeEnd) {
 					 video_stoptime = video_stoptimeEnd;
 				  }
-                  printLog("Restarting next split of %d seconds\n", cfg_val[c_video_split]);
+                  printLog("Restarting next split of %d seconds", cfg_val[c_video_split]);
 			      start_video(0);
 			   }
             }
@@ -452,7 +452,7 @@ int main (int argc, char* argv[]) {
    close(fd);
    if(system("killall motion 2> /dev/null") == -1) error("Could not stop external motion", 1);
   
-   printLog("SIGINT/SIGTERM received, stopping\n");
+   printLog("SIGINT/SIGTERM received, stopping");
    //
    // tidy up
    //

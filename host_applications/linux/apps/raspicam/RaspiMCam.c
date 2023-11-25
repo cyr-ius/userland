@@ -207,7 +207,7 @@ static void h264encoder_buffer_callback (MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T
     
     if(buffer->flags & MMAL_BUFFER_HEADER_FLAG_CONFIG) {
       if(header_wptr + buffer->length > sizeof(header_bytes)) {
-        printLog("DEBUG 1: %i, %i\n", header_wptr, (int)buffer->length);
+        printLog("DEBUG 1: %i, %i", header_wptr, (int)buffer->length);
         error("Error in header bytes\n", 0);
       }
       else  {
@@ -256,7 +256,7 @@ static void h264encoder_buffer_callback (MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T
                 (cb_wptr + buffer->length) > (iframe_buff[iframe_buff_rpos] + cb_len)
               )
              )
-          printLog("DEBUG 3\n");
+          printLog("DEBUG 3");
       }
 
       if((iframe_buff_rpos + 1) % IFRAME_BUFSIZE != iframe_buff_wpos)
@@ -286,7 +286,7 @@ static void h264encoder_buffer_callback (MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T
       for(i = iframe_buff_rpos; i != iframe_buff_wpos; i = (i + 1) % IFRAME_BUFSIZE) {
         int p = iframe_buff[i];
         if(cb_buff[p] != 0 || cb_buff[p+1] != 0 || cb_buff[p+2] != 0 || cb_buff[p+3] != 1) {
-          printLog("DEBUG 2: %i, %i\n", iframe_buff_rpos, iframe_buff_wpos);
+          printLog("DEBUG 2: %i, %i", iframe_buff_rpos, iframe_buff_wpos);
           iframe_buff_rpos = (iframe_buff_rpos + 1) % IFRAME_BUFSIZE;
           error("Error in iframe list", 0);
         }
@@ -420,10 +420,10 @@ void capt_img (void) {
    jpegoutput2_file = fopen(filename_image, "wb");
    if(jpegoutput2_file != NULL){ 
       status = mmal_port_parameter_set_boolean(camera->control, MMAL_PARAMETER_CAPTURE_STATS_PASS, cfg_val[c_stat_pass]);
-      if(status != MMAL_SUCCESS) printLog("Could not set stat_pass\n");
+      if(status != MMAL_SUCCESS) printLog("Could not set stat_pass");
       status = mmal_port_parameter_set_boolean(camera->output[2], MMAL_PARAMETER_CAPTURE, 1);
       if(status == MMAL_SUCCESS) {
-         printLog("Capturing image\n");
+         printLog("Capturing image");
          if (cfg_val[c_callback_timeout] > 0) {
             i_capturing = c_callback_timeout;
          } else {
@@ -514,7 +514,7 @@ void start_video(unsigned char prepare_buf) {
            copy_from_end = 0;
         }
 		if(copy_from_start + copy_from_end >= cb_len) {
-			//printLog("buffer fix start\n");
+			//printLog("buffer fix start");
 			copy_from_start = 0;
 			copy_from_end = cb_wptr - iframe_buff[iframe_buff_rpos];
 		}
@@ -523,7 +523,7 @@ void start_video(unsigned char prepare_buf) {
       }
       exec_macro(cfg_stru[c_start_vid], filename_recording);
       v_capturing = 1;
-      printLog("Capturing started\n");
+      printLog("Capturing started");
     }
     if(prepare_buf || !buffering) {
       h264_enable_output();
@@ -532,7 +532,7 @@ void start_video(unsigned char prepare_buf) {
     }
     updateStatus();
   } else {
-     printLog("Already capturing. Ignore \n");
+     printLog("Already capturing. Ignore ");
   }
   //pthread_mutex_unlock(&v_mutex);
 }
@@ -584,7 +584,7 @@ void stop_video(unsigned char stop_buf) {
           copy_from_end = 0;
         }
 		if(copy_from_start + copy_from_end >= cb_len) {
-			//printLog("buffer fix stop\n");
+			//printLog("buffer fix stop");
 			copy_from_start = 0;
 			copy_from_end = cb_wptr - iframe_buff[iframe_buff_rpos];
 		}
@@ -601,7 +601,7 @@ void stop_video(unsigned char stop_buf) {
       }
       fclose(h264output_file);
       h264output_file = NULL;
-      printLog("Capturing stopped\n");
+      printLog("Capturing stopped");
       if(cfg_val[c_MP4Box]) {
         //Queue the h264 for boxing
         add_box_file(filename_recording);
@@ -614,7 +614,7 @@ void stop_video(unsigned char stop_buf) {
     }
     updateStatus();
   } else {
-     printLog("Already stopped. Ignore \n");
+     printLog("Already stopped. Ignore ");
   }
   stop_vectors();
   if(cfg_val[c_stop_pause])
@@ -825,15 +825,15 @@ void cam_set(int key) {
          control = 3;id = MMAL_PARAMETER_SHUTTER_SPEED;break;
       case c_rotation:
          status = mmal_port_parameter_set_int32(camera->output[0], MMAL_PARAMETER_ROTATION, cfg_val[c_rotation]);
-         if(status != MMAL_SUCCESS) printLog("Could not set rotation (0)\n");
+         if(status != MMAL_SUCCESS) printLog("Could not set rotation (0)");
          status = mmal_port_parameter_set_int32(camera->output[1], MMAL_PARAMETER_ROTATION, cfg_val[c_rotation]);
-         if(status != MMAL_SUCCESS) printLog("Could not set rotation (1)\n");
+         if(status != MMAL_SUCCESS) printLog("Could not set rotation (1)");
          status = mmal_port_parameter_set_int32(camera->output[2], MMAL_PARAMETER_ROTATION, cfg_val[c_rotation]);
-         if(status != MMAL_SUCCESS) printLog("Could not set rotation (2)\n");
+         if(status != MMAL_SUCCESS) printLog("Could not set rotation (2)");
          break;
       case c_image_quality:
          status = mmal_port_parameter_set_uint32(jpegencoder2->output[0], MMAL_PARAMETER_JPEG_Q_FACTOR, cfg_val[c_image_quality]);
-         if(status != MMAL_SUCCESS) printLog("Could not set quality\n");
+         if(status != MMAL_SUCCESS) printLog("Could not set quality");
          break;
       case c_video_buffer:
          cam_set_buffer();
@@ -868,19 +868,19 @@ void cam_set(int key) {
       case 1: //rational
          value.num = cfg_val[key];
          status = mmal_port_parameter_set_rational(camera->control, id, value);
-         if(status != MMAL_SUCCESS) printLog("Could not set %s\n", cfg_key[key]);
+         if(status != MMAL_SUCCESS) printLog("Could not set %s", cfg_key[key]);
          break;
       case 2: //int32
          status = mmal_port_parameter_set_int32(camera->control, id, cfg_val[key]);
-         if(status != MMAL_SUCCESS) printLog("Could not set %s\n", cfg_key[key]);
+         if(status != MMAL_SUCCESS) printLog("Could not set %s", cfg_key[key]);
          break;
       case 3: //uint32
          status = mmal_port_parameter_set_uint32(camera->control, id, cfg_val[key]);
-         if(status != MMAL_SUCCESS) printLog("Could not set %s\n", cfg_key[key]);
+         if(status != MMAL_SUCCESS) printLog("Could not set %s", cfg_key[key]);
          break;
       case 4: //boolean
          status = mmal_port_parameter_set_boolean(camera->control, id, cfg_val[key]);
-         if(status != MMAL_SUCCESS) printLog("Could not set %s\n", cfg_key[key]);
+         if(status != MMAL_SUCCESS) printLog("Could not set %s", cfg_key[key]);
          break;
    }
 }
@@ -1066,7 +1066,7 @@ void start_all (int load_conf) {
    status = mmal_port_parameter_set_uint32(jpegencoder2->output[0], MMAL_PARAMETER_JPEG_Q_FACTOR, 85);
    if(status != MMAL_SUCCESS) error("Could not set jpeg quality 2", 1);
    status = mmal_port_parameter_set_boolean(camera->control, MMAL_PARAMETER_CAPTURE_STATS_PASS, cfg_val[c_stat_pass]);
-   if(status != MMAL_SUCCESS) printLog("Could not set stat_pass\n");
+   if(status != MMAL_SUCCESS) printLog("Could not set stat_pass");
 
    status = mmal_component_enable(jpegencoder2);
    if(status != MMAL_SUCCESS) error("Could not enable image encoder 2", 1);
@@ -1086,7 +1086,7 @@ void start_all (int load_conf) {
    
    h264encoder->output[0]->format->encoding = MMAL_ENCODING_H264;
    h264encoder->output[0]->format->bitrate = cfg_val[c_video_bitrate];
-   printLog("recommended video buffer size %d\n", h264encoder->output[0]->buffer_size_recommended);
+   printLog("recommended video buffer size %d", h264encoder->output[0]->buffer_size_recommended);
    if(cfg_val[c_h264_buffer_size] != 0) {
 	   h264_size = cfg_val[c_h264_buffer_size];
    } else {
@@ -1094,13 +1094,13 @@ void start_all (int load_conf) {
    }	   
    if(h264_size < h264encoder->output[0]->buffer_size_min) h264_size = h264encoder->output[0]->buffer_size_min;
    h264encoder->output[0]->buffer_size = h264_size;
-   printLog("h264 size set to %d\n", h264_size);
-   printLog("recommended video buffers %d\n", h264encoder->output[0]->buffer_num_recommended);
+   printLog("h264 size set to %d", h264_size);
+   printLog("recommended video buffers %d", h264encoder->output[0]->buffer_num_recommended);
    if(cfg_val[c_h264_buffers] == 0) {
-      printLog("h264 buffers set to recommended %d\n", h264encoder->output[0]->buffer_num_recommended);
+      printLog("h264 buffers set to recommended %d", h264encoder->output[0]->buffer_num_recommended);
       h264encoder->output[0]->buffer_num = h264encoder->output[0]->buffer_num_recommended;
    } else {
-      printLog("h264 buffers set to config %d\n", cfg_val[c_h264_buffers]);
+      printLog("h264 buffers set to config %d", cfg_val[c_h264_buffers]);
       h264encoder->output[0]->buffer_num = cfg_val[c_h264_buffers];
    }
    if(h264encoder->output[0]->buffer_num < h264encoder->output[0]->buffer_num_min)

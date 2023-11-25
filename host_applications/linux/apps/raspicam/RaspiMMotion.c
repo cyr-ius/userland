@@ -70,7 +70,7 @@ void setup_motiondetect() {
    
    if (cfg_val[c_motion_external] != 1) {
       mask_size = motion_width * motion_height;
-      printLog("Set up internal detect width=%d height=%d\n", motion_width, motion_height);
+      printLog("Set up internal detect width=%d height=%d", motion_width, motion_height);
       if (cfg_val[c_motion_file])
          vector_buffer = (unsigned char *)malloc(mask_size * 4 * VECTOR_BUFFER_FRAMES);
       
@@ -102,10 +102,10 @@ void setup_motiondetect() {
 				mask_buffer = 0;
 				error("invalid motion mask", 0);
 			 } else {
-				printLog("Motion mask %s loaded\n", cfg_stru[c_motion_image]);
+				printLog("Motion mask %s loaded", cfg_stru[c_motion_image]);
 			 }
 		 } else {
-			printLog("Can't open mask_image %s. Full path needed.\n", cfg_stru[c_motion_image]); 
+			printLog("Can't open mask_image %s. Full path needed.", cfg_stru[c_motion_image]); 
 		 }
       }
    }
@@ -116,7 +116,7 @@ void send_motion_start() {
    if(cfg_val[c_motion_external] == 0) {
 	   send_schedulecmd("1");
    } else if(cfg_val[c_motion_external] == 2){
-	   printLogEx(c_motion_logfile, "Motion start detected\n");
+	   printLogEx(c_motion_logfile, "Motion start detected");
    }
 }
 
@@ -125,7 +125,7 @@ void send_motion_stop() {
    if(cfg_val[c_motion_external] == 0) {
 	   send_schedulecmd("0");
    } else if(cfg_val[c_motion_external] == 2){
-	   printLogEx(c_motion_logfile, "Motion stop detected\n");
+	   printLogEx(c_motion_logfile, "Motion stop detected");
    }
 }
 
@@ -143,7 +143,7 @@ void analyse_vectors(MMAL_BUFFER_HEADER_T *buffer) {
 			 if (cfg_val[c_motion_file])
 				save_vectors(buffer);
 		  } else {
-			  printLog("Unexpected vector buffer size %d\n", buffer->length);
+			  printLog("Unexpected vector buffer size %d", buffer->length);
 		  }
 	  } else {
 		  motion_init_count--;
@@ -256,7 +256,7 @@ void reset_motion_state() {
 	if(motion_state > 0) {
 	  motion_state = 0;
 	  motion_frame_count = 0;
-      printLog("Reset motion state\n");
+      printLog("Reset motion state");
 	}
 }
 
@@ -264,7 +264,7 @@ void start_vectors(char *vectorname) {
    char *vector_temp;
    if(cfg_val[c_motion_file] && vector_buffer != 0) {
       asprintf(&vector_temp, "%s.dat", vectorname);
-      printLog("Copying vector data to %s\n", vector_temp);
+      printLog("Copying vector data to %s", vector_temp);
       vector_file = fopen(vector_temp, "a");
       free(vector_temp);
       if(vector_file == NULL) error("Could not open vector destination", 1);
@@ -309,5 +309,5 @@ void save_vectors(MMAL_BUFFER_HEADER_T *buffer) {
 
 void mask_disable(int disable) {
 	mask_disabled = disable;
-	printLog("mask disable %d\n", disable);
+	printLog("mask disable %d", disable);
 }

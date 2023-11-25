@@ -93,11 +93,11 @@ void process_cmd(char *readbuf, int length) {
                long vtime = strtol(pars[1], NULL, 10);
                video_stoptime = time(NULL) + vtime;
                video_stoptimeEnd = video_stoptime;
-               printLog("Capturing %d seconds\n", vtime);
+               printLog("Capturing %d seconds", vtime);
             }
 			if (cfg_val[c_video_split] > 0) {
                video_stoptime = time(NULL) + cfg_val[c_video_split];
-               printLog("Capturing with split of %d seconds\n", cfg_val[c_video_split]);
+               printLog("Capturing with split of %d seconds", cfg_val[c_video_split]);
 			}
             start_video(0);
          }  else {
@@ -113,14 +113,14 @@ void process_cmd(char *readbuf, int length) {
             timelapse = 1;
             lapse_cnt = 1;
             updateStatus();
-            printLog("Timelapse started\n");
+            printLog("Timelapse started");
          }
          else {
             image2_cnt++;
             timelapse = 0;
 			reset_motion_state();
             updateStatus();
-            printLog("Timelapse stopped\n");
+            printLog("Timelapse stopped");
          }
          break;
       case px:
@@ -262,11 +262,11 @@ void process_cmd(char *readbuf, int length) {
 			if (par0 == 0) {
             stop_all();
             idle = 1;
-            printLog("Stream halted\n");
+            printLog("Stream halted");
          } else {
             start_all(1);
             idle = 0;
-            printLog("Stream continued\n");
+            printLog("Stream continued");
          }
          updateStatus();
          break;
@@ -275,7 +275,7 @@ void process_cmd(char *readbuf, int length) {
          //If switching to internal with motion detection on then try to kill external motion
          if (cfg_val[c_motion_detection] != 0 && !par0) {
             if(system("killall motion 2> /dev/null") == -1) error("Could not stop external motion", 1);
-            printLog("External motion detection stopped\n");
+            printLog("External motion detection stopped");
          }
          break;
       case md:
@@ -284,22 +284,22 @@ void process_cmd(char *readbuf, int length) {
          if (cfg_val[c_motion_external] == 1) {
             if(par0 == 0) {
                if(system("killall motion 2> /dev/null") == -1) error("Could not stop external motion", 1);
-               printLog("External motion detection stopped\n");
+               printLog("External motion detection stopped");
             }
             else {
                if (cfg_val[c_motion_detection] == 0) {
                   if(system("motion") == -1) error("Could not start external motion", 1);
-                  printLog("External motion detection started\n");
+                  printLog("External motion detection started");
                } else {
-                  printLog("Motion already running. md 1 ignored\n");
+                  printLog("Motion already running. md 1 ignored");
                }
             }
          } else {
             if(par0 == 0) {
-               printLog("Internal motion detection stopped\n");
+               printLog("Internal motion detection stopped");
             }
             else {
-               printLog("Internal motion detection started\n");
+               printLog("Internal motion detection started");
             }
          }
          cfg_val[c_motion_detection] = par0?1:0;
@@ -308,10 +308,10 @@ void process_cmd(char *readbuf, int length) {
          break;
       case sc:
          set_counts();
-         printLog("Scan for highest count\n");
+         printLog("Scan for highest count");
          break;
       case rs:
-         printLog("Reset settings. Backed up and cleared to defaults\n");
+         printLog("Reset settings. Backed up and cleared to defaults");
          stop_all();
 		 asprintf(&settingsback, "%s.bak", cfg_stru[c_user_config]);
          saveUserConfig(settingsback);
@@ -375,11 +375,11 @@ void process_cmd(char *readbuf, int length) {
          break;
       case hp:
          key = c_hdmi_preview;
-         printLog("Setting HDMI Preview to %s\n", par0 ? "ON" : "OFF");
+         printLog("Setting HDMI Preview to %s", par0 ? "ON" : "OFF");
          cam_set_preview(par0);
          break;
       default:
-         printLog("Unrecognised pipe command\n");
+         printLog("Unrecognised pipe command");
          break;
    }
    
@@ -418,16 +418,16 @@ void exec_macro(char *macro, char *filename) {
             asprintf(&cmd,"%s \"%s\" %c", macropath, filename, async);
          else
             asprintf(&cmd,"%s &", macropath);
-         printLog("Executing macro %s\n", cmd);
+         printLog("Executing macro %s", cmd);
          system(cmd);
          free(cmd);
       } else if (filename == NULL) {
-         printLog("Can't find macro %s\n", macropath);
+         printLog("Can't find macro %s", macropath);
       }
       if (s != NULL) *s = ' ';
       free(macropath);
    } else {
-      printLog("Missing macro definition\n");
+      printLog("Missing macro definition");
    }
 }
 
