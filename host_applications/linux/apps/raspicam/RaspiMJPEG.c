@@ -95,7 +95,7 @@ char *cfg_key[] ={
    "shutter_speed","raw_layer",
    "width","quality","divider",
    "video_width","video_height","video_fps","fps_divider","video_bitrate","video_buffer","video_split",
-   "MP4Box","MP4Box_fps","boxing_path","MP4Box_cmd",
+   "mp4box","mp4box_fps","boxing_path","mp4box_cmd",
    "image_width","image_height","image_quality","tl_interval",
    "base_path","preview_path","image_path","lapse_path","video_path","status_file","control_file","media_path","macros_path","subdir_char","enforce_lf","fifo_interval",
    "thumb_gen","autostart","motion_detection","motion_file","vector_preview","vector_mode", "motion_external",
@@ -154,7 +154,7 @@ void addValue(int keyI, char *value, int both){
             };
             updateStatus();
             break;
-         case c_MP4Box:
+         case c_mp4box:
             if(strcmp(value, "background") == 0)
                val = 2;
 	    break;

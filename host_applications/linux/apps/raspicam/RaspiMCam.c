@@ -482,7 +482,7 @@ void start_video(unsigned char prepare_buf) {
       localTime = localtime (&(currTime.tv_sec));
       makeFilename(&filename_recording, cfg_stru[c_video_path]);
       createMediaPath(filename_recording);
-      if(cfg_val[c_MP4Box] != 0) {
+      if(cfg_val[c_mp4box] != 0) {
         thumb_create(filename_recording, 'v');
         start_vectors(filename_recording);
         makeBoxname(&filename_temp, filename_recording);
@@ -602,7 +602,7 @@ void stop_video(unsigned char stop_buf) {
       fclose(h264output_file);
       h264output_file = NULL;
       printLog("Capturing stopped");
-      if(cfg_val[c_MP4Box]) {
+      if(cfg_val[c_mp4box]) {
         //Queue the h264 for boxing
         add_box_file(filename_recording);
       }
@@ -914,7 +914,7 @@ void start_all (int load_conf) {
       if (cfg_stru[c_user_config] != 0)
          read_config(cfg_stru[c_user_config],0);
    }
-   if(cfg_val[c_MP4Box]) check_h264_toBox();
+   if(cfg_val[c_mp4box]) check_h264_toBox();
    
    //
    // create camera

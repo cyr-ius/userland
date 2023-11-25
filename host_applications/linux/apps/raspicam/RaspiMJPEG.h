@@ -117,7 +117,7 @@ typedef enum cfgkey_type
    c_shutter_speed,c_raw_layer,
    c_width,c_quality,c_divider,
    c_video_width,c_video_height,c_video_fps,c_fps_divider,c_video_bitrate,c_video_buffer,c_video_split,
-   c_MP4Box,c_MP4Box_fps,c_boxing_path,c_MP4Box_cmd,
+   c_mp4box,c_mp4box_fps,c_boxing_path,c_mp4box_cmd,
    c_image_width,c_image_height,c_image_quality,c_tl_interval,
    c_base_path,c_preview_path,c_image_path,c_lapse_path,c_video_path,c_status_file,c_control_file,c_media_path,c_macros_path,c_subdir_char,c_enforce_lf,c_fifo_interval,
    c_thumb_gen,c_autostart,c_motion_detection,c_motion_file,c_vector_preview,c_vector_mode,c_motion_external,

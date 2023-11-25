@@ -128,7 +128,7 @@ void process_cmd(char *readbuf, int length) {
          addUserValue(c_video_width, pars[0]);
          addUserValue(c_video_height, pars[1]);
          addUserValue(c_video_fps, pars[2]);
-         addUserValue(c_MP4Box_fps, pars[3]);
+         addUserValue(c_mp4box_fps, pars[3]);
          addUserValue(c_image_width, pars[4]);
          addUserValue(c_image_height, pars[5]);
          addUserValue(c_fps_divider, pars[6]);
@@ -142,7 +142,7 @@ void process_cmd(char *readbuf, int length) {
          start_all(0);
          break;
       case bo:
-         addUserValue(c_MP4Box, pars[0]);
+         addUserValue(c_mp4box, pars[0]);
          break;
       case tv:
          addUserValue(c_tl_interval, pars[0]);

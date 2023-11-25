@@ -435,7 +435,7 @@ int check_box_files() {
 	int ret = 0;
 	if (v_boxing > 0) {
 		makeBoxname(&filename_temp, box_files[box_tail]);
-		// check if current MP4Box finished by seeing if h264 now deleted
+		// check if current mp4box finished by seeing if h264 now deleted
 		if (access(filename_temp, F_OK ) == -1) {
 			printLog("Finished boxing %s from Box Queue at pos %d", box_files[box_tail], box_tail);
 			exec_macro(cfg_stru[c_end_box], box_files[box_tail]);
@@ -448,10 +448,10 @@ int check_box_files() {
 		free(filename_temp);
 	}
 	if(v_boxing == 0 && get_box_count() > 0) {
-		//start new MP4Box operation
+		//start new mp4box operation
 		makeBoxname(&filename_temp, box_files[box_tail]);
-		if(cfg_stru[c_MP4Box_cmd] == 0) cfg_stru[c_MP4Box_cmd] = "(set -e;MP4Box -fps %i -add %s %s > /dev/null 2>&1;rm \"%s\";MP4Box -info \"%s\" > \"%s.txt\") &";
-		asprintf(&cmd_temp, cfg_stru[c_MP4Box_cmd], cfg_val[c_MP4Box_fps], filename_temp, box_files[box_tail], filename_temp, box_files[box_tail], box_files[box_tail]);
+		if(cfg_stru[c_mp4box_cmd] == 0) cfg_stru[c_mp4box_cmd] = "(set -e;MP4Box -fps %i -add %s %s > /dev/null 2>&1;rm \"%s\";MP4Box -info \"%s\" > \"%s.txt\") &";
+		asprintf(&cmd_temp, cfg_stru[c_mp4box_cmd], cfg_val[c_mp4box_fps], filename_temp, box_files[box_tail], filename_temp, box_files[box_tail], box_files[box_tail]);
 		printLog("Start boxing %s to %s Queue pos %d", filename_temp, box_files[box_tail], box_tail);
 		system(cmd_temp);
 		v_boxing = 1;
