@@ -176,11 +176,11 @@ void saveUserConfig(char *cfilename) {
       for(i = 0; i < KEY_COUNT; i++) {
          if(strlen(cfg_key[i]) > 0) {
             if(cfg_stru[i] != 0 && cfg_strd[i] != 0 && strcmp(cfg_strd[i], cfg_stru[i]) != 0) {
-               fprintf(fp, "%s %s", cfg_key[i], cfg_stru[i]);
+               fprintf(fp, "%s %s\n", cfg_key[i], cfg_stru[i]);
             } else if (cfg_stru[i] != 0 && cfg_strd[i] == 0) {
-               fprintf(fp, "%s %s", cfg_key[i], cfg_stru[i]);
+               fprintf(fp, "%s %s\n", cfg_key[i], cfg_stru[i]);
             } else if (cfg_stru[i] == 0 && cfg_strd[i] != 0) {
-               fprintf(fp, "%s", cfg_key[i]);
+               fprintf(fp, "%s\n", cfg_key[i]);
             }
          }
       }
