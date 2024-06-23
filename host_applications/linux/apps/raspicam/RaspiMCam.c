@@ -499,7 +499,7 @@ void start_video(unsigned char prepare_buf) {
         start_vectors(filename_temp1);
         makeBoxname(&filename_temp, filename_temp1);
         h264output_file = fopen(filename_temp, "wb");
-		free(filename_temp1);
+		    free(filename_temp1);
       }
       free(filename_temp);
       if(!h264output_file) {error("Could not open/create video-file", 0); return;}
