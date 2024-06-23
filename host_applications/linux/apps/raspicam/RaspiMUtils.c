@@ -83,7 +83,7 @@ void printLogEx(int logfile, char *msg, ...) {
 		clock_gettime(CLOCK_REALTIME, &currTime);
 		localTime = localtime (&(currTime.tv_sec));
 		makeName(&timestamp, "%Y/%M/%D %h:%m:%s");
-		fprintf(fp, "{\"datetime\":\"%s\",\"msg\":\"",timestamp);
+		fprintf(fp, "{\"datetime\":\"%s\",\"level\":\"INFO\",\"msg\":\"",timestamp);
 		vfprintf(fp, msg, args);
 		fprintf(fp, "%s%s","\"", "}\n");
 		if (cfg_stru[logfile] != 0) {
@@ -115,7 +115,7 @@ void printLog(char *msg, ...) {
 		clock_gettime(CLOCK_REALTIME, &currTime);
 		localTime = localtime (&(currTime.tv_sec));
 		makeName(&timestamp, "%Y/%M/%D %h:%m:%s");
-		fprintf(fp, "{\"datetime\":\"%s\",\"msg\":\"",timestamp);
+		fprintf(fp, "{\"datetime\":\"%s\",\"level\":\"INFO\",\"msg\":\"",timestamp);
 		vfprintf(fp, msg, args);
 		fprintf(fp, "%s%s","\"", "}\n");
 		if (cfg_stru[c_log_file] != 0) {
