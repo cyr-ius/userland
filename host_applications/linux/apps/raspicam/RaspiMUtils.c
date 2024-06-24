@@ -442,6 +442,7 @@ int check_box_files() {
 		if (access(filename_temp, F_OK ) == -1) {
 			printLog("Finished boxing %s from Box Queue at pos %d", box_files[box_tail], box_tail);
 			exec_macro(cfg_stru[c_end_box], box_files[box_tail]);
+			send_schedulecmd("8");
 			free(box_files[box_tail]);
 			box_tail++;
 			if (box_tail >= MAX_BOX_FILES) box_tail = 0;

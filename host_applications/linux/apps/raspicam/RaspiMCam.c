@@ -609,7 +609,6 @@ void stop_video(unsigned char stop_buf) {
       }
       makeScriptname(&filename_temp, filename_recording);
       exec_macro(cfg_stru[c_end_vid], filename_temp);
-      send_schedulecmd("8");
       free(filename_temp);
       free(filename_recording);
       video_cnt++;
