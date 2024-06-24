@@ -429,6 +429,7 @@ void capt_img (void) {
          } else {
             i_capturing = 1;
          }
+         send_schedulecmd("7");
          updateStatus();
       } else {
          fclose(jpegoutput2_file);
@@ -608,6 +609,7 @@ void stop_video(unsigned char stop_buf) {
       }
       makeScriptname(&filename_temp, filename_recording);
       exec_macro(cfg_stru[c_end_vid], filename_temp);
+      send_schedulecmd("8");
       free(filename_temp);
       free(filename_recording);
       video_cnt++;
@@ -796,7 +798,6 @@ void cam_set_autowbgain () {
    status = mmal_port_parameter_set(camera->control, &param.hdr);
    if(status != MMAL_SUCCESS) error("Could not set sensor area", 0);
 }
-
 
 void cam_set(int key) {
    int control = 0;
@@ -1315,7 +1316,6 @@ void start_all (int load_conf) {
    //pthread_mutex_unlock(&v_mutex);
 
 }
-
 
 void stop_all (void) {
   //pthread_mutex_lock(&v_mutex);
