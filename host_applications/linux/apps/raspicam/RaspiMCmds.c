@@ -89,20 +89,20 @@ void process_cmd(char *readbuf, int length) {
    switch(pipe_cmd) {
       case ca:
          if(par0 == 1) {
-			if (parcount > 1) {
+            if (parcount > 1) {
                long vtime = strtol(pars[1], NULL, 10);
                video_stoptime = time(NULL) + vtime;
                video_stoptimeEnd = video_stoptime;
                printLog("Capturing %d seconds", vtime);
             }
-			if (cfg_val[c_video_split] > 0) {
+            if (cfg_val[c_video_split] > 0) {
                video_stoptime = time(NULL) + cfg_val[c_video_split];
                printLog("Capturing with split of %d seconds", cfg_val[c_video_split]);
-			}
+            }
             start_video(0);
          }  else {
             stop_video(0);
-			reset_motion_state();
+			   reset_motion_state();
          }
          break;
       case im:
@@ -118,7 +118,7 @@ void process_cmd(char *readbuf, int length) {
          else {
             image2_cnt++;
             timelapse = 0;
-			reset_motion_state();
+			   reset_motion_state();
             updateStatus();
             printLog("Timelapse stopped");
          }
@@ -203,7 +203,7 @@ void process_cmd(char *readbuf, int length) {
          break;
       case ag:
          addUserValue(c_autowbgain_b, pars[1]);
-		 key = c_autowbgain_r;
+		   key = c_autowbgain_r;
          break;
       case mm:
          key = 1000 + c_metering_mode;
@@ -313,7 +313,7 @@ void process_cmd(char *readbuf, int length) {
       case rs:
          printLog("Reset settings. Backed up and cleared to defaults");
          stop_all();
-		 asprintf(&settingsback, "%s.bak", cfg_stru[c_user_config]);
+		   asprintf(&settingsback, "%s.bak", cfg_stru[c_user_config]);
          saveUserConfig(settingsback);
 		 if (settingsback != 0) free(settingsback);
          read_config("/etc/raspimjpeg", 1);
@@ -362,9 +362,9 @@ void process_cmd(char *readbuf, int length) {
          exec_macro(parstring, NULL);
          break;
       case um:
-		 temp = strchr(parstring, ' ');
-		 if(temp) addUserValue(c_error_soft + par0, (temp+1));
-         break;
+		   temp = strchr(parstring, ' ');
+		   if (temp) addUserValue(c_error_soft + par0, (temp+1));
+            break;
       case cn:
          stop_all();
          addUserValue(c_camera_num, pars[0]);
