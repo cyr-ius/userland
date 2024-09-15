@@ -23,9 +23,9 @@ if [ $ARCH = "armv6l" ] || [ $ARCH = "armv7l" ] || [ $ARCH = "aarch64" ]; then
 	pushd build/raspberry/$BUILDSUBDIR
 	cmake -DCMAKE_BUILD_TYPE=$BUILDTYPE -DARM64=$ARM64 ../../..
 	if [ $ARCH = "armv6l" ]; then
-		make
+		make -j`nproc`
 	else
-		make -j4
+		make -j`nproc`
 	fi
 	if [ "$1" != "" ]; then
 		sudo make install DESTDIR=$1
