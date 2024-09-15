@@ -1,0 +1,9 @@
+.devcontainer
+.git
+.github
+.gitignore
+.dockerignore
+.pre-commit-config.yaml
+.vscode
+docker-compose.*
+Dockerfile
